@@ -2,7 +2,7 @@ const pokemonList = document.getElementById('pokemonList')
 const loadMoreButton = document.getElementById('loadMoreButton')
 
 const maxRecords = 151
-const limit = 10
+const limit = 8 // para melhor visualização, utilizando multiplos de 4
 let offset = 0;
 
 function convertPokemonToLi(pokemon) {
@@ -19,9 +19,24 @@ function convertPokemonToLi(pokemon) {
                 <img src="${pokemon.photo}"
                      alt="${pokemon.name}">
             </div>
+            <button onclick="Pokemondetalhes(${pokemon.number})" class="detalhelink">Detalhes</a>
+            <section id="detalhes ${pokemon.number}" class="detalhe">
+
+            </section>
+
         </li>
     `
 }
+
+//TODO
+function Pokemondetalhes(number){
+    const url = `https://pokeapi.co/api/v2/pokemon/${number}`
+    fetch(url).then((response) => response.json())
+    .then((jsonBody) => "Altura: " + jsonBody.height/10+"m" +"<br>Peso: " + jsonBody.weight/10+"kg")
+    .then((results) => document.getElementById(`detalhes ${number}`).innerHTML = results)
+
+}
+
 
 function loadPokemonItens(offset, limit) {
     pokeApi.getPokemons(offset, limit).then((pokemons = []) => {
